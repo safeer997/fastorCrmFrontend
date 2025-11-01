@@ -56,7 +56,7 @@ const LeadCard = ({ lead, onLeadClaimed, isClaimed }) => {
 
       if (successStatus === true) {
         console.log('Lead claimed successfully');
-        toast.success(successMessage);
+        // toast.success(successMessage);
 
         if (onLeadClaimed) {
           onLeadClaimed(lead._id);

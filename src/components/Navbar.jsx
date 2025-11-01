@@ -30,6 +30,10 @@ const Navbar = ({ showMyLeads, setShowMyLeads }) => {
     setShowMyLeads(!showMyLeads);
   }
 
+  function handleLeadForm() {
+    navigate('/submitlead');
+  }
+
   function handleLogout() {
     const token = localStorage.getItem('fastorToken');
     console.log('Token from localStorage:', token);
@@ -54,12 +58,16 @@ const Navbar = ({ showMyLeads, setShowMyLeads }) => {
           </Typography>
 
           <Button
-            variant="outlined"
+            variant='outlined'
             color='inherit'
             onClick={handleShowMyLeads}
           >
             {showMyLeads === true && 'Show All Leads'}
             {showMyLeads === false && 'Show My Leads'}
+          </Button>
+
+          <Button variant='outlined' color='inherit' onClick={handleLeadForm}>
+            Lead Form
           </Button>
 
           <Button
