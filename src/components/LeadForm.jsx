@@ -4,7 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 
-const LeadForm = ({ onLeadAdded }) => {
+function LeadForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -52,7 +52,6 @@ const LeadForm = ({ onLeadAdded }) => {
 
       const successStatus = response.data.success;
       const successMessage = response.data.message;
-    
 
       if (successStatus === true) {
         toast.success(successMessage);
@@ -60,7 +59,7 @@ const LeadForm = ({ onLeadAdded }) => {
         setEmail('');
         setPhone('');
         setCourseInterest('');
-      
+
         if (onLeadAdded) {
           onLeadAdded();
         }
@@ -79,7 +78,7 @@ const LeadForm = ({ onLeadAdded }) => {
   return (
     <Card sx={{ p: 3, mb: 3, boxShadow: 2 }}>
       <Typography variant='h6' sx={{ mb: 2 }}>
-        Add New Lead
+        Kindly Fill Your Information
       </Typography>
 
       <form onSubmit={handleSubmit}>
@@ -137,6 +136,6 @@ const LeadForm = ({ onLeadAdded }) => {
       </form>
     </Card>
   );
-};
+}
 
 export default LeadForm;
