@@ -1,9 +1,79 @@
-import React from 'react'
+import { useEffect } from 'react';
+import { Box, Button, Typography, AppBar, Toolbar } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-const Navbar = () => {
+const Navbar = ({ showMyLeads, setShowMyLeads }) => {
+  const [userName, setUserName] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    function getUserNameFromToken() {
+      const token = localStorage.getItem('fastorToken');
+      console.log('Token from localStorage:', token);
+
+      if (token) {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        console.log('Decoded token:', decodedToken);
+        const email = decodedToken.email;
+        console.log('Email from token:', email);
+        setUserName(email);
+      }
+    }
+
+    getUserNameFromToken();
+  }, []);
+
+  function handleShowMyLeads() {
+    // console.log('Show my leads button clicked');
+    console.log(' showMyLeads :', showMyLeads);
+    setShowMyLeads(!showMyLeads);
+  }
+
+  function handleLogout() {
+    const token = localStorage.getItem('fastorToken');
+    console.log('Token from localStorage:', token);
+
+    if (token) {
+      localStorage.removeItem('fastorToken');
+    }
+    setUserName('');
+    navigate('/auth');
+  }
+
   return (
-    <div>Navbar</div>
-  )
-}
+    <AppBar position='static' sx={{ background: '#2c3e50' }}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Typography variant='h6' sx={{ fontWeight: 'bold' }}>
+          Fastor CRM
+        </Typography>
 
-export default Navbar
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <Typography variant='body2' sx={{ color: 'white' }}>
+            Welcome, {userName}
+          </Typography>
+
+          <Button
+            variant="outlined"
+            color='inherit'
+            onClick={handleShowMyLeads}
+          >
+            {showMyLeads === true && 'Show All Leads'}
+            {showMyLeads === false && 'Show My Leads'}
+          </Button>
+
+          <Button
+            variant='contained'
+            color='error'
+            onClick={handleLogout}
+            sx={{ background: '#e74c3c' }}
+          >
+            Logout
+          </Button>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+};
+
+export default Navbar;
