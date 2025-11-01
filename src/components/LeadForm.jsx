@@ -45,7 +45,7 @@ const LeadForm = ({ onLeadAdded }) => {
       setLoading(true);
 
       const response = await axios.post(
-        'http://localhost:7300/api/enquiry',
+        'http://localhost:7300/api/lead/createlead',
         leadData
       );
       console.log('response:', response);

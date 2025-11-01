@@ -11,6 +11,7 @@ import {
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router';
 
 function Auth() {
   const [tab, setTab] = useState('login');
@@ -18,6 +19,8 @@ function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   function handleTabChange(e, newTab) {
     setTab(newTab);
@@ -54,7 +57,7 @@ function Auth() {
     try {
       setLoading(true);
       const response = await axios.post(
-        'http://localhost:7300/api/auth/register',
+        'http://localhost:7300/api/user/register',
         registerData
       );
       console.log('response :', response);
@@ -86,11 +89,11 @@ function Auth() {
       email: email,
       password: password,
     };
-    
+
     try {
       setLoading(true);
       const response = await axios.post(
-        'http://localhost:7300/api/auth/login',
+        'http://localhost:7300/api/user/login',
         loginData
       );
       console.log('Login response:', response);
@@ -104,6 +107,7 @@ function Auth() {
         toast.success(successMessage);
         setEmail('');
         setPassword('');
+        navigate('/dashboard');
       }
     } catch (error) {
       console.log('Login error:', error);

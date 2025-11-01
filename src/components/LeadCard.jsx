@@ -40,7 +40,7 @@ const LeadCard = ({ lead, onLeadClaimed, isClaimed }) => {
       console.log('Loading state set to true');
 
       const response = await axios.post(
-        `http://localhost:7300/api/enquiry/${lead._id}/claim`,
+        `http://localhost:7300/api/lead/claimlead/${lead._id}`,
         {},
         {
           headers: {
