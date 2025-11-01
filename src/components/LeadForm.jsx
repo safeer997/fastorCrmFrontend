@@ -1,8 +1,9 @@
 import React from 'react';
-import { Card, TextField, Button, Typography } from '@mui/material';
+import { Card, TextField, Button, Typography ,Box} from '@mui/material';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { useState } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 
 function LeadForm() {
   const [name, setName] = useState('');
@@ -54,15 +55,13 @@ function LeadForm() {
       const successMessage = response.data.message;
 
       if (successStatus === true) {
+        console.log('Lead submitted successfully');
         toast.success(successMessage);
+
         setName('');
         setEmail('');
         setPhone('');
         setCourseInterest('');
-
-        if (onLeadAdded) {
-          onLeadAdded();
-        }
       }
     } catch (error) {
       const errorMessage =
@@ -76,65 +75,68 @@ function LeadForm() {
   }
 
   return (
-    <Card sx={{ p: 3, mb: 3, boxShadow: 2 }}>
-      <Typography variant='h6' sx={{ mb: 2 }}>
-        Kindly Fill Your Information
-      </Typography>
+    <Box>
+      <ToastContainer position='top-center' autoClose={2000} />
+      <Card sx={{ p: 3, mb: 3, boxShadow: 2 }}>
+        <Typography variant='h6' sx={{ mb: 2 }}>
+          Kindly Fill Your Information
+        </Typography>
 
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label='Name'
-          name='name'
-          fullWidth
-          margin='normal'
-          required
-          value={name}
-          onChange={handleNameChange}
-        />
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label='Name'
+            name='name'
+            fullWidth
+            margin='normal'
+            required
+            value={name}
+            onChange={handleNameChange}
+          />
 
-        <TextField
-          label='Email'
-          name='email'
-          fullWidth
-          margin='normal'
-          required
-          type='email'
-          value={email}
-          onChange={handleEmailChange}
-        />
+          <TextField
+            label='Email'
+            name='email'
+            fullWidth
+            margin='normal'
+            required
+            type='email'
+            value={email}
+            onChange={handleEmailChange}
+          />
 
-        <TextField
-          label='Phone'
-          name='phone'
-          fullWidth
-          margin='normal'
-          required
-          value={phone}
-          onChange={handlePhoneChange}
-        />
+          <TextField
+            label='Phone'
+            name='phone'
+            fullWidth
+            margin='normal'
+            required
+            value={phone}
+            onChange={handlePhoneChange}
+          />
 
-        <TextField
-          label='Course Interest'
-          name='courseInterest'
-          fullWidth
-          margin='normal'
-          required
-          value={courseInterest}
-          onChange={handleCourseChange}
-        />
+          <TextField
+            label='Course Interest'
+            name='courseInterest'
+            fullWidth
+            margin='normal'
+            required
+            value={courseInterest}
+            onChange={handleCourseChange}
+          />
 
-        <Button
-          fullWidth
-          type='submit'
-          variant='contained'
-          sx={{ mt: 2 }}
-          disabled={loading}
-        >
-          {loading === true && 'Submitting...'}
-          {loading === false && 'Submit Lead'}
-        </Button>
-      </form>
-    </Card>
+          <Button
+            fullWidth
+            type='submit'
+            variant='contained'
+            sx={{ mt: 2 }}
+            disabled={loading}
+          >
+            {loading === true && 'Submitting...'}
+            {loading === false && 'Submit Lead'}
+          </Button>
+        </form>
+      </Card>
+    </Box>
   );
 }
 
