@@ -57,7 +57,7 @@ function Auth() {
     try {
       setLoading(true);
       const response = await axios.post(
-        'http://localhost:7300/api/user/register',
+        'https://fastorcrmbackend.onrender.com/api/user/register',
         registerData
       );
       console.log('response :', response);
@@ -93,7 +93,7 @@ function Auth() {
     try {
       setLoading(true);
       const response = await axios.post(
-        'http://localhost:7300/api/user/login',
+        'https://fastorcrmbackend.onrender.com/api/user/login',
         loginData
       );
       console.log('Login response:', response);

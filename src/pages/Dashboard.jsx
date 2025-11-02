@@ -40,7 +40,7 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        'http://localhost:7300/api/lead/unclaimed',
+        'https://fastorcrmbackend.onrender.com/api/lead/unclaimed',
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -74,7 +74,7 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        'http://localhost:7300/api/lead/userleads',
+        'https://fastorcrmbackend.onrender.com/api/lead/userleads',
         {
           headers: {
             Authorization: `Bearer ${token}`,

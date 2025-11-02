@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, TextField, Button, Typography ,Box} from '@mui/material';
+import { Card, TextField, Button, Typography, Box } from '@mui/material';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { useState } from 'react';
@@ -46,7 +46,7 @@ function LeadForm() {
       setLoading(true);
 
       const response = await axios.post(
-        'http://localhost:7300/api/lead/createlead',
+        'https://fastorcrmbackend.onrender.com/api/lead/createlead',
         leadData
       );
       console.log('response:', response);
