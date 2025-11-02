@@ -190,10 +190,25 @@ function Auth() {
             sx={{ mt: 2 }}
             disabled={loading}
           >
-            {loading === true && 'Please wait...'}
+            {loading === true && 'Signing In'}
             {loading === false && tab === 'login' && 'Login'}
             {loading === false && tab === 'register' && 'Register'}
           </Button>
+
+          {loading === true && (
+            <Typography
+              variant='caption'
+              color="green"
+              sx={{
+                display: 'block',
+                textAlign: 'center',
+                mt: 2,
+                fontWeight: '500',
+              }}
+            >
+              Please wait...it might take 30 seconds due to server inactivity.
+            </Typography>
+          )}
         </form>
 
         <Typography
