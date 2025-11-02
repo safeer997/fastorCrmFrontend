@@ -1,16 +1,87 @@
-# React + Vite
+# 🧾 Fastor CRM 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Fastor CRM is a full-featured React application that allows users to register, authenticate, submit leads, view unclaimed leads, and claim leads for follow-up. The application features protected routes for authenticated users, public lead submission forms, and real-time notifications. It communicates seamlessly with the [Fastor CRM Backend](https://github.com/safeer997/fastorCrmBackend) API for all data operations.
 
-Currently, two official plugins are available:
+---
+### 🌐 Live Links
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Dashboard:** [https://fastorcrmfrontend.onrender.com/](https://fastorcrmfrontend.onrender.com/)
+- **Submit Lead (Public):** [https://fastorcrmfrontend.onrender.com/submit-lead](https://fastorcrmfrontend.onrender.com/submitlead)
 
-## React Compiler
+✨ Ready to use! No setup required — just visit the links and start managing leads!
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
+## 📸 Screenshots
 
-## Expanding the ESLint configuration
+<div align="center" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 40px;">
+  <img src="screenshots/register.png" alt="Register User" width="400" />
+  <img src="screenshots/login.png" alt="Login User" width="400" />
+</div>
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+<br><br>
+
+<div align="center" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 40px;">
+  <img src="screenshots/dashboard.png" alt="Dashboard" width="400" />
+  <img src="screenshots/claimedleads.png" alt="Claimed leads" width="400" />
+</div>
+
+<br><br>
+
+<div align="center" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 40px;">
+  <img src="screenshots/leadform.png" alt="Lead form" width="400" />
+</div>
+
+---
+
+## 🔐 Features
+
+- **User Authentication:** Register and login with JWT tokens
+- **Protected Routes:** Dashboard only accessible with valid token
+- **Lead Management:** View unclaimed leads and claimed leads
+- **Claim Leads:** Users can claim leads from unclaimed leads pool
+- **Public Lead Form:** Anyone can submit leads without authentication
+- **Real-time Updates:** Toast notifications for success and error messages
+- **Responsive Design:** Works on desktop and mobile devices
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React 19, Vite
+- **UI Framework:** Material-UI (MUI)
+- **Routing:** React Router DOM
+- **HTTP Client:** Axios
+- **Notifications:** React Toastify
+- **Authentication:** JWT (localStorage)
+
+---
+
+## ⚙️ Installation Guide
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/your-username/fastorCrmFrontend.git
+   cd fastorCrmFrontend
+   npm install
+
+   ```
+
+2. **Change Api Urls **
+
+   ```bash
+   change to your localhost / backend service url
+   ```
+
+3. **Start the server**
+
+   ```bash
+   npm run dev
+   ```
+
+## 📫 Contact
+
+- GitHub: [safeer997](https://github.com/safeer997)
+- Email: safeeralam997@gmail.com
+
+```
