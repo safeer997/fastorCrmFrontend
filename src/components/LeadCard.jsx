@@ -1,120 +1,242 @@
 import { Card, Box, Typography, Button, Chip } from '@mui/material';
+import { motion } from 'framer-motion';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 const LeadCard = ({ lead, onLeadClaimed, isClaimed }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  function getButtonStatus() {
-    if (isClaimed === true) {
-      return 'Claimed by You';
-    } else {
-      return 'Claim Lead';
-    }
-  }
-
-  function getButtonColor() {
-    if (isClaimed === true) {
-      return 'success';
-    } else {
-      return 'primary';
-    }
-  }
-
-  async function handleClaimLead() {
-    console.log('Lead ID:', lead._id);
-
+  const handleClaimLead = async () => {
     const token = localStorage.getItem('fastorToken');
-
     if (!token) {
-      console.log('Token not found');
-      toast.error('Please login first');
       navigate('/auth');
+      return;
     }
 
     try {
       setLoading(true);
-      console.log('Loading state set to true');
-
       const response = await axios.post(
         `https://fastorcrmbackend.onrender.com/api/lead/claimlead/${lead._id}`,
         {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      const successStatus = response.data.success;
-      const successMessage = response.data.message;
-      console.log('Success status:', successStatus);
-      console.log('Success message:', successMessage);
-
-      if (successStatus === true) {
-        console.log('Lead claimed successfully');
-        // toast.success(successMessage);
-
-        if (onLeadClaimed) {
-          onLeadClaimed(lead._id);
-        }
+      if (response.data.success && onLeadClaimed) {
+        onLeadClaimed(lead._id);
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || 'Something went wrong';
-      console.log('Error message:', errorMessage);
-
-      toast.error(errorMessage);
+      toast.error(error.response?.data?.message || 'Failed to claim lead');
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
-    <Card sx={{ p: 2, mb: 2, boxShadow: 1, border: '1px solid #e0e0e0' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-        <Typography variant='h6'>{lead.name}</Typography>
+    <Card
+      component={motion.div}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ translateY: -4 }}
+      transition={{ duration: 0.2 }}
+      sx={{
+        p: { xs: 2.5, md: 3 },
+        display: 'grid',
+        gridTemplateColumns: {
+          xs: '1fr',
+          sm: 'repeat(2, 1fr)',
+          md: 'repeat(4, 1fr) 150px',
+          lg: 'repeat(4, 1fr) 180px',
+        },
+        gap: { xs: 2, md: 2.5 },
+        alignItems: 'center',
+        border: `2px solid ${isClaimed ? '#BF092F' : '#e8eef2'}`,
+        borderRadius: '12px',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
+          borderColor: '#BF092F',
+        },
+      }}
+    >
+      {/* NAME FIELD */}
+      <Box sx={{ minWidth: 0 }}>
+        <Typography
+          sx={{
+            fontSize: '0.7rem',
+            color: '#95a5a6',
+            textTransform: 'uppercase',
+            fontWeight: 600,
+            mb: 0.5,
+            letterSpacing: '0.5px',
+          }}
+        >
+          Name
+        </Typography>
+        <Typography
+          sx={{
+            fontWeight: 600,
+            color: '#132440',
+            fontSize: '0.95rem',
+            wordBreak: 'break-word',
+          }}
+        >
+          {lead.name}
+        </Typography>
+      </Box>
 
+      {/* EMAIL FIELD */}
+      <Box sx={{ minWidth: 0 }}>
+        <Typography
+          sx={{
+            fontSize: '0.7rem',
+            color: '#95a5a6',
+            textTransform: 'uppercase',
+            fontWeight: 600,
+            mb: 0.5,
+            letterSpacing: '0.5px',
+          }}
+        >
+          Email
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: '0.85rem',
+            color: '#2c3e50',
+            wordBreak: 'break-all',
+          }}
+        >
+          {lead.email}
+        </Typography>
+      </Box>
+
+      {/* COURSE FIELD */}
+      <Box sx={{ minWidth: 0 }}>
+        <Typography
+          sx={{
+            fontSize: '0.7rem',
+            color: '#95a5a6',
+            textTransform: 'uppercase',
+            fontWeight: 600,
+            mb: 0.5,
+            letterSpacing: '0.5px',
+          }}
+        >
+          Course
+        </Typography>
         <Chip
-          label={isClaimed === true ? 'Claimed' : 'Unclaimed'}
-          color={isClaimed === true ? 'success' : 'default'}
-          size='small'
+          label={lead.courseInterest}
+          size="small"
+          sx={{
+            background: 'linear-gradient(135deg, #16476A 0%, #3B9797 100%)',
+            color: '#fff',
+            fontWeight: 600,
+            fontSize: '0.75rem',
+            height: 'auto',
+            '& .MuiChip-label': {
+              px: 1,
+              py: 0.5,
+            },
+          }}
         />
       </Box>
 
-      <Typography variant='body2' color='text.secondary' sx={{ mb: 1 }}>
-        Email: {lead.email}
-      </Typography>
-
-      <Typography variant='body2' color='text.secondary' sx={{ mb: 1 }}>
-        Phone: {lead.phone}
-      </Typography>
-
-      <Typography variant='body2' color='text.secondary' sx={{ mb: 2 }}>
-        Course Interest: {lead.courseInterest}
-      </Typography>
-
-      {isClaimed === false && (
-        <Button
-          variant='contained'
-          color={getButtonColor()}
-          fullWidth
-          onClick={handleClaimLead}
-          disabled={loading}
+      {/* PHONE FIELD (DESKTOP ONLY) */}
+      <Box sx={{ display: { xs: 'none', md: 'block' }, minWidth: 0 }}>
+        <Typography
+          sx={{
+            fontSize: '0.7rem',
+            color: '#95a5a6',
+            textTransform: 'uppercase',
+            fontWeight: 600,
+            mb: 0.5,
+            letterSpacing: '0.5px',
+          }}
         >
-          {loading === true && 'Claiming...'}
-          {loading === false && getButtonStatus()}
-        </Button>
-      )}
+          Phone
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: '0.85rem',
+            color: '#2c3e50',
+            wordBreak: 'break-all',
+          }}
+        >
+          {lead.phone}
+        </Typography>
+      </Box>
 
-      {isClaimed === true && (
-        <Button variant='contained' color={getButtonColor()} fullWidth disabled>
-          {getButtonStatus()}
-        </Button>
-      )}
+      {/* BUTTON SECTION - FULL WIDTH ON MOBILE */}
+      <Box
+        sx={{
+          gridColumn: { xs: '1 / -1', md: 'auto' },
+          display: 'flex',
+          gap: 1,
+          width: '100%',
+        }}
+      >
+        {!isClaimed ? (
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            style={{ width: '100%' }}
+          >
+            <Button
+              onClick={handleClaimLead}
+              disabled={loading}
+              variant="contained"
+              fullWidth
+              sx={{
+                background: loading
+                  ? '#ccc'
+                  : 'linear-gradient(135deg, #16476A 0%, #BF092F 100%)',
+                py: { xs: 1.2, md: 1 },
+                px: { xs: 2, md: 1.5 },
+                borderRadius: '8px',
+                fontSize: { xs: '0.9rem', md: '0.8rem' },
+                fontWeight: 600,
+                boxShadow: '0 4px 12px rgba(191, 9, 47, 0.2)',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  boxShadow: '0 6px 20px rgba(191, 9, 47, 0.3)',
+                  background: loading
+                    ? '#ccc'
+                    : 'linear-gradient(135deg, #16476A 0%, #BF092F 100%)',
+                },
+                '&:disabled': {
+                  background: '#ccc',
+                  boxShadow: 'none',
+                },
+              }}
+            >
+              {loading ? (
+                <span style={{ letterSpacing: '2px' }}>...</span>
+              ) : (
+                'Claim'
+              )}
+            </Button>
+          </motion.div>
+        ) : (
+          <Chip
+            label="✓ Claimed"
+            sx={{
+              background: '#BF092F',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              width: '100%',
+              height: 'auto',
+              py: 1.2,
+              '& .MuiChip-label': {
+                px: 2,
+              },
+            }}
+          />
+        )}
+      </Box>
     </Card>
   );
 };

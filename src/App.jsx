@@ -4,9 +4,10 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
 import Auth from './pages/Auth';
-import Dashboard from './pages/Dashboard';
-import LeadForm from './components/LeadForm';
+import Dashboard from './pages/Dashboard.jsx';
+import LeadForm from './components/LeadForm.jsx';
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('fastorToken');
@@ -18,21 +19,24 @@ function ProtectedRoute({ children }) {
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path='/auth' element={<Auth />} />
-        <Route
-          path='/dashboard'
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route path='/submitlead' element={<LeadForm />} />
-        <Route path='*' element={<Navigate to='/auth' />} />
-      </Routes>
-    </Router>
+    <>
+      <CssBaseline />
+      <Router>
+        <Routes>
+          <Route path='/auth' element={<Auth />} />
+          <Route
+            path='/dashboard'
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route path='/submitlead' element={<LeadForm />} />
+          <Route path='*' element={<Navigate to='/auth' />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 

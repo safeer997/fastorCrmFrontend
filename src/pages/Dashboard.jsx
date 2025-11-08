@@ -1,11 +1,18 @@
-import React from 'react';
-import { Box, Container, Typography, CircularProgress } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Container,
+  Typography,
+  CircularProgress,
+  Button,
+} from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import LeadCard from '../components/LeadCard';
+import Footer from '../components/Footer';
 
 const Dashboard = () => {
   const [showMyLeads, setShowMyLeads] = useState(false);
@@ -15,160 +22,151 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    function checkToken() {
-      const token = localStorage.getItem('fastorToken');
-      if (!token) {
-        console.log('Token not found, navigating to auth');
-        navigate('/auth');
-      }
-    }
-    checkToken();
+    const token = localStorage.getItem('fastorToken');
+    if (!token) navigate('/auth');
   }, [navigate]);
 
   useEffect(() => {
-    console.log('leads changed:', showMyLeads);
-    if (showMyLeads === true) {
-      fetchMyLeads();
-    } else {
-      fetchAllLeads();
-    }
+    showMyLeads ? fetchMyLeads() : fetchAllLeads();
   }, [showMyLeads]);
 
-  async function fetchAllLeads() {
+  const fetchAllLeads = async () => {
     const token = localStorage.getItem('fastorToken');
-
     try {
       setLoading(true);
       const response = await axios.get(
         'https://fastorcrmbackend.onrender.com/api/lead/unclaimed',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(' response:', response);
-      const successStatus = response.data.success;
-      const leadsData = response.data.data;
-      console.log('leads data:', leadsData);
-
-      if (successStatus === true) {
-        console.log('All leads fetched successfully');
-        setAllLeads(leadsData);
-      }
+      if (response.data.success) setAllLeads(response.data.data);
     } catch (error) {
-      console.log('Fetch all leads error:', error);
-
-      const errorMessage =
-        error.response?.data?.message || 'Something went wrong';
-      console.log('Error message:', errorMessage);
-
-      toast.error(errorMessage);
+      toast.error(error.response?.data?.message || 'Failed to fetch leads');
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  async function fetchMyLeads() {
+  const fetchMyLeads = async () => {
     const token = localStorage.getItem('fastorToken');
     try {
       setLoading(true);
       const response = await axios.get(
         'https://fastorcrmbackend.onrender.com/api/lead/userleads',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log('Fetching my leads :', response);
-      const successStatus = response.data.success;
-      const leadsData = response.data.data;
-      console.log('Success status:', successStatus);
-      console.log('Leads data:', leadsData);
-
-      if (successStatus === true) {
-        setMyLeads(leadsData);
-      }
+      if (response.data.success) setMyLeads(response.data.data);
     } catch (error) {
-      console.log('Fetch my leads error:', error);
-      const errorMessage =
-        error.response?.data?.message || 'Something went wrong';
-      console.log('Error message:', errorMessage);
-
-      toast.error(errorMessage);
+      toast.error(error.response?.data?.message || 'Failed to fetch leads');
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  function handleLeadClaimed(leadId) {
-    console.log('Lead ID claimed:', leadId);
-
-    const updatedAllLeads = allLeads.filter(function (lead) {
-      return lead._id !== leadId;
-    });
-    setAllLeads(updatedAllLeads);
-    toast.success('Lead claimed successfully!');
+  const handleLeadClaimed = (leadId) => {
+    setAllLeads(allLeads.filter((lead) => lead._id !== leadId));
+    toast.success('✓ Lead claimed successfully!');
     fetchMyLeads();
-  }
+  };
 
-  function getLeadsToDisplay() {
-    if (showMyLeads === true) {
-      return myLeads;
-    } else {
-      return allLeads;
-    }
-  }
-
-  function getDisplayTitle() {
-    if (showMyLeads === true) {
-      return 'My Claimed Leads';
-    } else {
-      return 'All Unclaimed Leads';
-    }
-  }
-
-  const leadsToDisplay = getLeadsToDisplay();
-  const displayTitle = getDisplayTitle();
+  const leadsToDisplay = showMyLeads ? myLeads : allLeads;
+  const displayTitle = showMyLeads ? 'My Claimed Leads' : 'Available Leads';
 
   return (
-    <Box sx={{ minHeight: '100vh', background: '#f4f6f8' }}>
-      <ToastContainer position='top-center' autoClose={2000} />
-
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <ToastContainer position="top-center" autoClose={2000} />
       <Navbar showMyLeads={showMyLeads} setShowMyLeads={setShowMyLeads} />
 
-      <Container maxWidth='md' sx={{ py: 4 }}>
-        <Typography variant='h5' sx={{ mb: 3, fontWeight: 'bold' }}>
-          {displayTitle}
-        </Typography>
+      <Box
+        sx={{
+          flex: 1,
+          background: 'linear-gradient(180deg, #f5f7fa 0%, #f0f2f5 100%)',
+          py: { xs: 4, md: 6 },
+        }}
+      >
+        <Container maxWidth="lg">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Box sx={{ mb: 4 }}>
+              <Typography
+                sx={{
+                  fontSize: { xs: '1.8rem', md: '2.2rem' },
+                  fontWeight: 700,
+                  color: '#132440',
+                  mb: 1,
+                }}
+              >
+                {displayTitle}
+              </Typography>
+              <Typography sx={{ color: '#7f8c8d', fontSize: '0.95rem' }}>
+                {leadsToDisplay.length} lead{leadsToDisplay.length !== 1 ? 's' : ''} available
+              </Typography>
+            </Box>
+          </motion.div>
 
-        {loading === true && (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 5 }}>
-            <CircularProgress />
-          </Box>
-        )}
+          {loading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
+              <CircularProgress sx={{ color: '#16476A' }} size={50} />
+            </Box>
+          ) : leadsToDisplay.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+            >
+              <Box
+                sx={{
+                  textAlign: 'center',
+                  py: 10,
+                  bgcolor: '#fff',
+                  borderRadius: '16px',
+                  border: '1px solid #e8eef2',
+                }}
+              >
+                <Typography sx={{ fontSize: '1.1rem', fontWeight: 600, color: '#132440', mb: 1 }}>
+                  {showMyLeads ? 'No claimed leads' : 'No available leads'}
+                </Typography>
+                <Typography sx={{ color: '#7f8c8d', mb: 3 }}>
+                  {showMyLeads ? 'Start claiming leads now' : 'Check back soon'}
+                </Typography>
+                {showMyLeads && (
+                  <Button
+                    onClick={() => setShowMyLeads(false)}
+                    variant="contained"
+                    sx={{
+                      background: 'linear-gradient(135deg, #16476A 0%, #BF092F 100%)',
+                    }}
+                  >
+                    View All Leads
+                  </Button>
+                )}
+              </Box>
+            </motion.div>
+          ) : (
+            <AnimatePresence>
+              <Box sx={{ display: 'grid', gap: 2 }}>
+                {leadsToDisplay.map((lead, i) => (
+                  <motion.div
+                    key={lead._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                  >
+                    <LeadCard
+                      lead={lead}
+                      onLeadClaimed={handleLeadClaimed}
+                      isClaimed={showMyLeads}
+                    />
+                  </motion.div>
+                ))}
+              </Box>
+            </AnimatePresence>
+          )}
+        </Container>
+      </Box>
 
-        {loading === false && leadsToDisplay.length === 0 && (
-          <Typography variant='body1' color='text.secondary' sx={{ py: 5 }}>
-            No leads found
-          </Typography>
-        )}
-
-        {loading === false &&
-          leadsToDisplay.length > 0 &&
-          leadsToDisplay.map(function (lead) {
-            const isClaimed = showMyLeads === true;
-            return (
-              <LeadCard
-                key={lead._id}
-                lead={lead}
-                onLeadClaimed={handleLeadClaimed}
-                isClaimed={isClaimed}
-              />
-            );
-          })}
-      </Container>
+      <Footer />
     </Box>
   );
 };
