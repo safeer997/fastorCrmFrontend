@@ -71,23 +71,23 @@ function LeadForm() {
         bgcolor: '#f5f7fa',
       }}
     >
-      <ToastContainer position="top-center" autoClose={2000} />
+      <ToastContainer position='top-center' autoClose={2000} />
 
       {/* GENERIC PUBLIC HEADER */}
-      <PublicHeader title="Fastor CRM" showLogin={true} />
+      <PublicHeader title='Fastor CRM' showLogin={true} />
 
       {/* MAIN CONTENT */}
       <Box
         sx={{
           flex: 1,
           background: 'linear-gradient(180deg, #f5f7fa 0%, #f0f2f5 100%)',
-          py: { xs: 4, md: 8 },
+          py: { xs: 1, md: 1 },
           display: 'flex',
           alignItems: 'center',
-          marginTop: '64px', // Account for AppBar height
+          marginTop: { xs: '16px', md: '24px' },
         }}
       >
-        <Container maxWidth="md" sx={{ width: '100%' }}>
+        <Container maxWidth='md' sx={{ width: '100%' }}>
           {/* HEADER SECTION */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -114,7 +114,8 @@ function LeadForm() {
                 mx: 'auto',
               }}
             >
-              Join our community and connect with industry experts. Fill out the form below and our team will get back to you as soon as possible.
+              Join our community and connect with industry experts. Fill out the
+              form below and our team will get back to you as soon as possible.
             </Typography>
           </motion.div>
 
@@ -149,12 +150,12 @@ function LeadForm() {
                   transition={{ delay: 0.15 }}
                 >
                   <TextField
-                    label="Full Name"
+                    label='Full Name'
                     fullWidth
-                    name="name"
+                    name='name'
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="John Doe"
+                    placeholder='John Doe'
                     sx={{ mb: 2.5 }}
                   />
                 </motion.div>
@@ -166,13 +167,13 @@ function LeadForm() {
                   transition={{ delay: 0.2 }}
                 >
                   <TextField
-                    label="Email Address"
-                    type="email"
+                    label='Email Address'
+                    type='email'
                     fullWidth
-                    name="email"
+                    name='email'
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="john@example.com"
+                    placeholder='john@example.com'
                     sx={{ mb: 2.5 }}
                   />
                 </motion.div>
@@ -184,12 +185,12 @@ function LeadForm() {
                   transition={{ delay: 0.25 }}
                 >
                   <TextField
-                    label="Phone Number"
+                    label='Phone Number'
                     fullWidth
-                    name="phone"
+                    name='phone'
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+1 (555) 000-0000"
+                    placeholder='+1 (555) 000-0000'
                     sx={{ mb: 2.5 }}
                   />
                 </motion.div>
@@ -201,12 +202,12 @@ function LeadForm() {
                   transition={{ delay: 0.3 }}
                 >
                   <TextField
-                    label="Course Interest"
+                    label='Course Interest'
                     fullWidth
-                    name="courseInterest"
+                    name='courseInterest'
                     value={formData.courseInterest}
                     onChange={handleChange}
-                    placeholder="e.g., Web Development"
+                    placeholder='e.g., Web Development'
                     sx={{ mb: 3 }}
                   />
                 </motion.div>
@@ -217,9 +218,9 @@ function LeadForm() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <Button
-                    type="submit"
+                    type='submit'
                     fullWidth
-                    variant="contained"
+                    variant='contained'
                     disabled={loading}
                     sx={{
                       py: 1.5,
@@ -244,7 +245,7 @@ function LeadForm() {
                       <Box
                         sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
                       >
-                        <CircularProgress size={20} color="inherit" />
+                        <CircularProgress size={20} color='inherit' />
                         <span>Submitting...</span>
                       </Box>
                     ) : (
@@ -378,7 +379,8 @@ function LeadForm() {
                     lineHeight: 1.6,
                   }}
                 >
-                  Thank you for your interest. Our team will contact you shortly with exciting opportunities.
+                  Thank you for your interest. Our team will contact you shortly
+                  with exciting opportunities.
                 </Typography>
               </Card>
             </motion.div>
