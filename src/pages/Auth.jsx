@@ -106,7 +106,7 @@ function Auth() {
     >
       <ToastContainer position='top-center' autoClose={2000} />
 
-      {/* LEFT HERO SECTION - 50% (DESKTOP ONLY) */}
+      {/* LEFT HERO SECTION */}
       <Box
         component={motion.div}
         initial={{ opacity: 0, x: -50 }}
@@ -218,7 +218,7 @@ function Auth() {
         </Box>
       </Box>
 
-      {/* RIGHT FORM SECTION - 50% DESKTOP, 100% MOBILE */}
+      {/* RIGHT FORM SECTION */}
       <Box
         component={motion.div}
         initial={{ opacity: 0, x: 50 }}
@@ -235,26 +235,24 @@ function Auth() {
           flex: { xs: 'none', md: 1 },
         }}
       >
-        <Card
-          component={motion.div}
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          sx={{
-            width: '100%',
-            maxWidth: '420px',
-            p: { xs: 3, sm: 4 },
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
-            borderRadius: '16px',
-          }}
-        >
-          {/* HEADER */}
-          <motion.div
-            key={isLogin ? 'login-header' : 'register-header'}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
+        <AnimatePresence mode='wait'>
+          <Card
+            key={isLogin ? 'login-card' : 'register-card'}
+            component={motion.div}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -30, scale: 0.95 }}
             transition={{ duration: 0.3 }}
+            sx={{
+              width: '100%',
+              maxWidth: '420px',
+              p: { xs: 3, sm: 4 },
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
+              borderRadius: '16px',
+              backgroundColor: '#fff',
+            }}
           >
+            {/* HEADER */}
             <Box sx={{ mb: 3, textAlign: 'center' }}>
               <Typography
                 sx={{
@@ -272,196 +270,166 @@ function Auth() {
                   : 'Create your account to get started'}
               </Typography>
             </Box>
-          </motion.div>
 
-          {/* FORM */}
-          <form onSubmit={handleSubmit}>
-            <AnimatePresence mode='wait'>
-              {/* NAME FIELD - REGISTER ONLY */}
+            {/* FORM */}
+            <form onSubmit={handleSubmit}>
               {!isLogin && (
-                <motion.div
-                  key='name-field'
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <TextField
-                    label='Full Name'
-                    fullWidth
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder='John Doe'
-                    sx={{ mb: 2.5 }}
-                  />
-                </motion.div>
-              )}
-
-              {/* EMAIL FIELD */}
-              <motion.div
-                key='email-field'
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
                 <TextField
-                  label='Email'
-                  type='email'
+                  label='Full Name'
                   fullWidth
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder='you@example.com'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder='John Doe'
                   sx={{ mb: 2.5 }}
                 />
-              </motion.div>
-
-              {/* PASSWORD FIELD */}
-              <motion.div
-                key='password-field'
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
-                <TextField
-                  label='Password'
-                  type='password'
-                  fullWidth
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder='••••••••'
-                  sx={{ mb: 3 }}
-                />
-              </motion.div>
-            </AnimatePresence>
-
-            {/* SUBMIT BUTTON */}
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              disabled={loading}
-              sx={{
-                py: 1.4,
-                mb: 2,
-                background: 'linear-gradient(135deg, #16476A 0%, #BF092F 100%)',
-                fontSize: '0.95rem',
-                fontWeight: 600,
-                borderRadius: '10px',
-                boxShadow: '0 4px 12px rgba(191, 9, 47, 0.2)',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 6px 20px rgba(191, 9, 47, 0.3)',
-                },
-                '&:disabled': {
-                  background: '#ccc',
-                  boxShadow: 'none',
-                },
-              }}
-            >
-              {loading ? (
-                <CircularProgress size={20} color='inherit' />
-              ) : isLogin ? (
-                'Sign In'
-              ) : (
-                'Create Account'
               )}
-            </Button>
 
-            {loading && (
-              <Typography
+              <TextField
+                label='Email'
+                type='email'
+                fullWidth
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder='you@example.com'
+                sx={{ mb: 2.5 }}
+              />
+
+              <TextField
+                label='Password'
+                type='password'
+                fullWidth
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder='••••••••'
+                sx={{ mb: 3 }}
+              />
+
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                disabled={loading}
                 sx={{
-                  textAlign: 'center',
-                  fontSize: '0.8rem',
-                  color: '#16476A',
+                  py: 1.4,
+                  mb: 2,
+                  background:
+                    'linear-gradient(135deg, #16476A 0%, #BF092F 100%)',
+                  fontSize: '0.95rem',
                   fontWeight: 600,
+                  borderRadius: '10px',
+                  boxShadow: '0 4px 12px rgba(191, 9, 47, 0.2)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 6px 20px rgba(191, 9, 47, 0.3)',
+                  },
+                  '&:disabled': {
+                    background: '#ccc',
+                    boxShadow: 'none',
+                  },
                 }}
               >
-                It may take 30s due to server slip.
-                <br />
-                Thank you for your patience.
-              </Typography>
-            )}
-          </form>
+                {loading ? (
+                  <CircularProgress size={20} color='inherit' />
+                ) : isLogin ? (
+                  'Sign In'
+                ) : (
+                  'Create Account'
+                )}
+              </Button>
 
-          {/* CTA SECTION */}
-         
-          <Box
-            sx={{
-              textAlign: 'center',
-              mt: 3,
-              pt: 3,
-              borderTop: '1px solid #e8eef2',
-            }}
-          >
-            <Typography sx={{ fontSize: '0.85rem', color: '#95a5a6', mb: 1.5 }}>
-              {isLogin ? (
-                <>
-                  Don’t have an account?{' '}
-                  <Typography
-                    component='span'
-                    onClick={handleToggleMode}
-                    sx={{
-                      color: '#BF092F',
-                      fontWeight: 700,
-                      fontSize: '0.9rem',
-                      cursor: 'pointer',
-                      display: 'inline',
-                      textDecoration: 'none',
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        color: '#3B9797',
-                      },
-                    }}
-                  >
-                    Register now
-                  </Typography>
-                  .
-                </>
-              ) : (
-                <>
-                  Already have an account?{' '}
-                  <Typography
-                    component='span'
-                    onClick={handleToggleMode}
-                    sx={{
-                      color: '#BF092F',
-                      fontWeight: 700,
-                      fontSize: '0.9rem',
-                      cursor: 'pointer',
-                      display: 'inline',
-                      textDecoration: 'none',
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        color: '#3B9797',
-                      },
-                    }}
-                  >
-                    Sign in instead
-                  </Typography>
-                  .
-                </>
+              {loading && (
+                <Typography
+                  sx={{
+                    textAlign: 'center',
+                    fontSize: '0.8rem',
+                    color: '#16476A',
+                    fontWeight: 600,
+                  }}
+                >
+                  It may take 30s due to server slip.
+                  <br />
+                  Thank you for your patience.
+                </Typography>
               )}
-            </Typography>
+            </form>
 
-            <Typography
+            {/* CTA SECTION */}
+            <Box
               sx={{
-                fontSize: '0.75rem',
-                color: '#b0b0b0',
-                mt: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 0.5,
+                textAlign: 'center',
+                mt: 3,
+                pt: 3,
+                borderTop: '1px solid #e8eef2',
               }}
             >
-              Made with <span style={{ color: '#BF092F' }}>❤️</span> by Safeer
-              Alam
-            </Typography>
-          </Box>
-        </Card>
+              <Typography sx={{ fontSize: '0.85rem', color: '#95a5a6', mb: 1.5 }}>
+                {isLogin ? (
+                  <>
+                    Don’t have an account?{' '}
+                    <Typography
+                      component='span'
+                      onClick={handleToggleMode}
+                      sx={{
+                        color: '#BF092F',
+                        fontWeight: 700,
+                        fontSize: '0.9rem',
+                        cursor: 'pointer',
+                        display: 'inline',
+                        textDecoration: 'none',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          color: '#3B9797',
+                        },
+                      }}
+                    >
+                      Register now
+                    </Typography>
+                    .
+                  </>
+                ) : (
+                  <>
+                    Already have an account?{' '}
+                    <Typography
+                      component='span'
+                      onClick={handleToggleMode}
+                      sx={{
+                        color: '#BF092F',
+                        fontWeight: 700,
+                        fontSize: '0.9rem',
+                        cursor: 'pointer',
+                        display: 'inline',
+                        textDecoration: 'none',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          color: '#3B9797',
+                        },
+                      }}
+                    >
+                      Sign in instead
+                    </Typography>
+                    .
+                  </>
+                )}
+              </Typography>
+
+              <Typography
+                sx={{
+                  fontSize: '0.75rem',
+                  color: '#b0b0b0',
+                  mt: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 0.5,
+                }}
+              >
+                Made with <span style={{ color: '#BF092F' }}>❤️</span> by Safeer
+                Alam
+              </Typography>
+            </Box>
+          </Card>
+        </AnimatePresence>
       </Box>
     </Box>
   );
